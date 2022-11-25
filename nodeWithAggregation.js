@@ -1,12 +1,12 @@
 const { connect } = require("./db");
 
-process.on("message", async () => {
-  const fact = await aggregate();
-  process.send(fact);
-  process.exit();
-});
+// process.on("message", async () => {
+//   const fact = await aggregate();
+//   process.send(fact);
+//   process.exit();
+// });
 
-async function aggregate() {
+async function aggregate(req, res) {
   const agg = [
     {
       '$match': {
@@ -35,5 +35,9 @@ async function aggregate() {
 
   await client.close();
 
-  return result;
+  return res.json(result);
+}
+
+module.exports = {
+  aggregate
 }

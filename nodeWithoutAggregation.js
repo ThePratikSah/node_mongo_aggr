@@ -1,12 +1,12 @@
 const { connect } = require("./db");
+//
+// process.on("message", async () => {
+//   const fact = await aggregate();
+//   process.send(fact);
+//   process.exit();
+// });
 
-process.on("message", async () => {
-  const fact = await aggregate();
-  process.send(fact);
-  process.exit();
-});
-
-async function aggregate() {
+async function withoutAggregate(req, res) {
   const { client, coll } = await connect();
   const cursor = coll.find({
     'startDateTime': {
@@ -42,5 +42,9 @@ async function aggregate() {
     dataWithTime[key] = "" + totalTimeSpent;
   }
 
-  return dataWithTime;
+  return res.json(dataWithTime);
 }
+
+module.exports = {
+  withoutAggregate,
+};
