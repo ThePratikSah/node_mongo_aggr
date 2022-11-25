@@ -3,6 +3,8 @@ const totalCPUs = require("os").cpus().length;
 const { fork } = require("child_process");
 const { getDataInStream } = require("./nodeWIthStream");
 
+const PORT = process.env.PORT || 8080
+
 if (cluster.isMaster) {
   console.log(`Number of CPUs is ${totalCPUs}`);
   console.log(`Master ${process.pid} is running`);
@@ -19,6 +21,7 @@ if (cluster.isMaster) {
   });
 } else {
   const app = require("express")();
+
   app.get("/calculate-with-agg", (req, res) => {
     const forked = fork("nodeWithAggregation.js");
     forked.send({});
@@ -39,5 +42,5 @@ if (cluster.isMaster) {
 
   app.get("/calculate-with-stream", getDataInStream);
 
-  app.listen(8081, () => console.log("Listening on 8081"));
+  app.listen(PORT, () => console.log("Listening on "+PORT));
 }
