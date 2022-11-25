@@ -27,4 +27,4 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test --if-present
-    - run: sudo pm2 restart backend
+    - run: pm2 restart backend
